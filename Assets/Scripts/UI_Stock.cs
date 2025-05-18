@@ -94,6 +94,7 @@ public class UI_Stock : MonoBehaviour
         float change7dPercent = stock.GetPriceChangePercent(daysAgo);
         if(change7d < 0) history7d.text = "<color=#FF0000>\u25bc" + change7d.ToString("F2") +" HRN "+ change7dPercent.ToString("F2")+"%";
         if(change7d > 0) history7d.text = "<color=#02fa02>\u25b2 +" + change7d.ToString("F2")+" HRN "+ change7dPercent.ToString("F2")+"%";
+        //test
         
         
         
