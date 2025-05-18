@@ -75,6 +75,7 @@ public static class Stocks
     public static Stock Salo => _registry["Salo"];
     public static Stock Vyshyvanka => _registry["Vyshyvanka"];
     public static Stock Horilka => _registry["Horilka"];
+    public static Stock TractorParts => _registry["TractorParts"];
     #endregion
     
     public static void Init()
@@ -86,6 +87,7 @@ public static class Stocks
         _registry["Salo"] = new Stock("Salo", 100f);
         _registry["Vyshyvanka"] = new Stock("Vyshyvanka", 500f);
         _registry["Horilka"] = new Stock("Horilka", 300f);
+        _registry["TractorParts"] = new Stock("Tractor Parts", 1000f);
         #endregion
     }
     

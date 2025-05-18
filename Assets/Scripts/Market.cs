@@ -21,6 +21,8 @@ public class Market : MonoBehaviour
        Stocks.Init();
        Events.Init();
        stocks = Stocks.All.ToList();
+       
+       
       // e =  WeatherTime.Instance.waitTime;
        
     }
@@ -71,9 +73,6 @@ public class Market : MonoBehaviour
         stocks.Clear();
         stocks = Stocks.All.ToList();
         
-        
-        
-        
         distributeRandomToAllStocks(-0.02f,0.02f);
         SaveGame();
        // Debug.Log("Vyshivanka price: "+Stocks.Vyshyvanka.history[WeatherTime.Instance.daysPassed]);
@@ -89,6 +88,7 @@ public class Market : MonoBehaviour
         {
             float impact = Random.Range(min, max);
             s.price += s.price*impact;
+            Debug.Log(s.name + " : " + impact+" at: "+WeatherTime.Instance.currentTime);
         }
     }
 

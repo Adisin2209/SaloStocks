@@ -1,3 +1,4 @@
 Salo,100
 Vyshyvanka,500
 Horilka,300
+TractorParts,1000

@@ -48,12 +48,14 @@ public class WeatherTime : MonoBehaviour
     IEnumerator TimeClock()
     {
         //Start new Day
-        daysPassed++;
+        
         eventHour = Random.Range(7, 19); // 7 bis 18
         eventFiredToday = false;
         
         
         currentTime = 0;
+        
+        daysPassed++;
         while (currentTime <= dayLength-1)
         {
             

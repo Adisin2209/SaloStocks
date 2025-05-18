@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class UI_Stock : MonoBehaviour
 {
     [SerializeField] public string selectedStockKey;
     private Stock stock;
+
+    [Header("Detailed Information")] 
+    //public GameObject detailedViewGo;
 
     public TMP_Text stockName;
     public TMP_Text stockPrice;
@@ -16,10 +20,13 @@ public class UI_Stock : MonoBehaviour
     [Header("History Elements")]
     public TMP_Text history1d;
     public TMP_Text history7d;
-    public TMP_Text historyAll;
-    public TMP_Text historySinceBought;
+
     [ReadOnly]
     public int dayNormed;
+    
+    [Header("Portfolio Elements")]
+    public TMP_Text portfolioAmount;
+    public TMP_Text portfolioValTotal;
     
 
     void Start()
@@ -30,7 +37,38 @@ public class UI_Stock : MonoBehaviour
     
     void Update()
     {
-        if (stock == null) return;
+        if(UI_Handler.Instance == null) UI_Handler.Instance = GameObject.FindGameObjectWithTag("mainCanvas").GetComponent<UI_Handler>();
+        
+        
+        #region Edgecase for first day where there is no data yet
+        if (WeatherTime.Instance.daysPassed <= 1)
+        {
+            history1d.text = "NO DATA YET";
+            history7d.text = "NO DATA YET";
+        }
+        
+
+        #endregion
+        
+        //IN PORTFOLIO
+        var entry = Player.Instance.stocksInWallet.Find(s => s.stock == stock);
+        if (entry != null)
+        {
+            portfolioAmount.text = entry.amount.ToString() + "x";  //$"{entry.amount} x {stock.price:F2} HRN";
+            portfolioValTotal.text = (entry.amount*stock.price).ToString("F2") + " HRN";
+        }
+        else
+        {
+            portfolioAmount.text = "0x";
+            portfolioValTotal.text = "0.00 HRN";
+        }
+        
+        
+        if (stock == null)
+        {
+            
+            return;
+        }
 
         stockName.text = stock.name;
         stockPrice.text = $"{stock.price:F2} HRN";
@@ -45,17 +83,21 @@ public class UI_Stock : MonoBehaviour
         float change1d = stock.GetPriceChangeRaw(1);
         float change1dPercent = stock.GetPriceChangePercent(1);
         
-        if(change1d < 0) history1d.text = "24H: <color=#FF0000>" + change1d.ToString("F2") +"HRN ["+ change1dPercent.ToString("F2")+"]%";
-        if(change1d > 0) history1d.text = "24H: <color=#02fa02>+" + change1d.ToString("F2")+"HRN ["+ change1dPercent.ToString("F2")+"%]";
-        if(change1d == 0)history1d.text = "24H: --- --- --- ---";
+        if(change1d < 0) history1d.text = "<color=#FF0000>\u25bc" + change1d.ToString("F2") +" HRN "+ change1dPercent.ToString("F2")+"%";
+        if(change1d > 0) history1d.text = "<color=#02fa02>\u25b2 +" + change1d.ToString("F2")+" HRN "+ change1dPercent.ToString("F2")+"%";
+        if(change1d == 0)history1d.text = "--- --- --- ---";
         
 
         // 7-Tages-Änderung oder seit Beginn
         int daysAgo = Mathf.Min(7, currentDay);
         float change7d = stock.GetPriceChangeRaw(daysAgo);
         float change7dPercent = stock.GetPriceChangePercent(daysAgo);
-        if(change7d < 0) history7d.text = "7D: <color=#FF0000>" + change7d.ToString("F2") +"HRN ["+ change7dPercent.ToString("F2")+"]%";
-        if(change7d > 0) history7d.text = "7D: <color=#02fa02>+" + change7d.ToString("F2")+"HRN ["+ change7dPercent.ToString("F2")+"%]";
+        if(change7d < 0) history7d.text = "<color=#FF0000>\u25bc" + change7d.ToString("F2") +" HRN "+ change7dPercent.ToString("F2")+"%";
+        if(change7d > 0) history7d.text = "<color=#02fa02>\u25b2 +" + change7d.ToString("F2")+" HRN "+ change7dPercent.ToString("F2")+"%";
+        
+        
+        
+        
     }
 
     public void buyStock()
@@ -83,6 +125,20 @@ public class UI_Stock : MonoBehaviour
            UI_Handler.Instance.createMouseNotification("1x "+stock.name+" sold!");
             
         }
+    }
+
+    public void showDetailedView()
+    {
+        if (!UI_Handler.Instance.detailedStockInfoWindow.activeSelf)
+        {
+            UI_Handler.Instance.detailedStockInfoWindow.SetActive(true);
+        }
+        else if(UI_Handler.Instance.detailedStockInfoWindow.activeSelf && UI_Handler.Instance.CurrentStock == stock)
+        {
+            UI_Handler.Instance.detailedStockInfoWindow.SetActive(false);
+        }
+        UI_Handler.Instance.CurrentStock = stock;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 }
 
