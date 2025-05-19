@@ -1,0 +1,7 @@
+# Ignoriere Shaderlab-Dateien für die Sprachstatistik
+*.shader linguist-detectable=false
+*.cginc linguist-detectable=false
+*.hlsl linguist-detectable=false
+
+# Optional: Ignoriere Unity-spezifische .meta-Dateien
+*.meta linguist-detectable=false
