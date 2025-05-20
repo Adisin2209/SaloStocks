@@ -1,62 +1,122 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
+[System.Serializable]
+public class StockImpact
+{
+    public Stock stock;
+    public float impact;
+
+    public StockImpact(Stock stock, float impact)
+    {
+        this.stock = stock;
+        this.impact = impact / 100f; // Prozent zu Faktor
+    }
+}
+[System.Serializable]
 public class Event
 {
     public string name;
     public string description;
-    public Stock stock;
-    public float impact;
+    public List<StockImpact> affectedStocks;
     public float probability;
 
-    public Event(string name, string description, Stock stock, float impact, float probability)
+    public Event(string name, string description, List<StockImpact> affectedStocks, float probability)
     {
         this.name = name;
         this.description = description;
-        this.stock = stock;
-        this.impact = impact / 100;
+        this.affectedStocks = affectedStocks;
         this.probability = probability;
     }
 }
 
+[System.Serializable]
 public static class Events
 {
-    private static List<Event> eventList = new();
+    public static List<Event> eventList = new();
 
     #region CREATING_EVENTS
     public static Event SaloSpoilage { get; private set; }
     public static Event VyshyvankaFashionTrend { get; private set; }
+    //public static Event HesmoDihhSpermrace { get; private set; }
     #endregion
 
     public static void Init()
     {
-        eventList.Clear();
+        //eventList.Clear();
 
 
         #region INIT_EVENTS
-SaloSpoilage = new Event("Salo Spoilage", "Salo was stored wrong and now smells terrible!", Stocks.Salo, -25f, 150);
+        
+        SaloSpoilage = new Event(
+            "Salo Spoilage",
+            "Salo was stored wrong and now smells terrible!",
+            new List<StockImpact>
+            {
+                new StockImpact(Stocks.Salo, -25f),
+                new StockImpact(Stocks.Vyshyvanka, -10f)
+            },
+            10
+        );
         eventList.Add(SaloSpoilage);
 
-        VyshyvankaFashionTrend = new Event("Vyshyvanka Fashion Trend", "Vyshyvanka becomes the new hipster must-have!", Stocks.Vyshyvanka, 40f, 300);
+        
+        VyshyvankaFashionTrend = new Event(
+            "Vyshyvanka Fashion Trend",
+            "Vyshyvanka becomes the new hipster must-have!",
+            new List<StockImpact>
+            {
+                new StockImpact(Stocks.Vyshyvanka, 40f),
+                new StockImpact(Stocks.Salo, 10f) // Beispiel: Auch Salo profitiert leicht
+            },
+            10
+        );
         eventList.Add(VyshyvankaFashionTrend);
+        
+        
+
+        //HesmoDihhSpermrace = new Event("Hesmo Dihh Spermrace", "Upcoming Spermrace by Hesmos Dihhh", Stocks. HesmoDihh,  300f,  1000);
+        //eventList.Add(HesmoDihhSpermrace);
+        
+        
         #endregion
+    }
+
+    public static void addEvent(string name,string description ,float probability, List<StockImpact> affectedStocks)
+    {
+        eventList.Add(new Event(name,description,affectedStocks,probability));
     }
 
     public static void fireEvent(Event e)
     {
         Debug.Log(e.name + ": " + "\n" + e.description);
-        e.stock.price += e.stock.price * e.impact;
-        UI_Handler.Instance.eventNameText.text ="Day "+ WeatherTime.Instance.daysPassed+" "+WeatherTime.Instance.currentTime+":00 "+": "+e.name ;
-        if (e.impact < 0)
+      //  e.stock.price += e.stock.price * e.impact;
+        
+        UI_Handler.Instance.eventNameText.text ="Day "+ WeatherTime.Instance.daysPassed+" "+WeatherTime.Instance.currentTime+":00 "+": "+e.name;
+        UI_Handler.Instance.eventDescriptionText.text = e.description;
+
+        foreach (var pair in e.affectedStocks)
         {
-            //NEGATIVER IMPACT MINUS
-            UI_Handler.Instance.eventDescriptionText.text = e.description + "\n<color=#FF0000>" + e.stock.name + " " + (e.impact * 100f).ToString("F2") + "%</color>";
+            Stock stock = pair.stock;
+            float impact = pair.impact;
+            
+            stock.price += stock.price * impact;
+            
+            if (impact < 0)
+            {
+                //NEGATIVER IMPACT MINUS
+                UI_Handler.Instance.eventDescriptionText.text += "\n<color=#FF0000>" + stock.name + " " + (impact * 100f).ToString("F2") + "%</color>";
+            }
+            else
+            {
+                UI_Handler.Instance.eventDescriptionText.text += "\n<color=#34D900>" + stock.name + " +" + (impact * 100f).ToString("F2") + "%</color>";
+            }
+            
         }
-        else
-        {
-            UI_Handler.Instance.eventDescriptionText.text = e.description + "\n<color=#02fa02>" + e.stock.name + " +" + (e.impact * 100f).ToString("F2") + "%</color>";
-        }
+        
         
         UI_Handler.Instance.eventNotifications.GetComponent<Animation>().Stop();
         UI_Handler.Instance.eventNotifications.GetComponent<Animation>().Play();

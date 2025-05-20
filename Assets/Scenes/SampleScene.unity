@@ -501,7 +501,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 19
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -2262,6 +2262,7 @@ GameObject:
   - component: {fileID: 635351007}
   - component: {fileID: 635351009}
   - component: {fileID: 635351010}
+  - component: {fileID: 635351011}
   m_Layer: 0
   m_Name: '|====HANDLER====|'
   m_TagString: Untagged
@@ -2282,6 +2283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stocks: []
+  allStocks: []
 --- !u!4 &635351008
 Transform:
   m_ObjectHideFlags: 0
@@ -2309,6 +2311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 396ae33eea5e78c4fa8d7fbad88bbe1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AutoSave: 0
   freeBalance: 1000
   portfolioBalance: 0
   stocksInWallet: []
@@ -2326,13 +2329,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   daysPassed: 0
   currentTime: 0
-  waitTime: 1
+  waitTime: 0.1
   dayLength: 24
   nightStart: 20
   dayStart: 6
   globalLight: {fileID: 619394801}
   Day: {fileID: 995179372}
   Night: {fileID: 1038078806}
+--- !u!114 &635351011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635351006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ea7031b858d5c8deb13dae8f6c85ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loggedKeys: 
+  events: []
 --- !u!1 &688143574
 GameObject:
   m_ObjectHideFlags: 0
@@ -4794,8 +4811,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 19, y: -46.40943}
-  m_SizeDelta: {x: 676.4756, y: 92.8188}
+  m_AnchoredPosition: {x: 16.8033, y: -46.40943}
+  m_SizeDelta: {x: 671.594, y: 92.8188}
   m_Pivot: {x: 0.45, y: 0.37}
 --- !u!114 &1580860419
 MonoBehaviour:
@@ -4817,7 +4834,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d069eee53ae0d4a4e9a92c1eac8b065c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 765c1f075652d7c429d7ea036691f745, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4826,7 +4843,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.5
+  m_PixelsPerUnitMultiplier: 0.4
 --- !u!222 &1580860420
 CanvasRenderer:
   m_ObjectHideFlags: 0

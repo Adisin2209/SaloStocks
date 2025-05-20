@@ -59,7 +59,7 @@ with open(stocks_cs, "w", encoding="utf-8") as f:
     f.write(new_stocks_code)
 
 # === Events.cs generieren ===
-with open(events_cs, "r", encoding="utf-8") as f:
+""" with open(events_cs, "r", encoding="utf-8") as f:
     original_events_code = f.read()
 
 event_props = "\n".join([
@@ -78,6 +78,6 @@ new_events_code = replace_region(original_events_code, "CREATING_EVENTS", event_
 new_events_code = replace_region(new_events_code, "INIT_EVENTS", event_inits.strip())
 
 with open(events_cs, "w", encoding="utf-8") as f:
-    f.write(new_events_code)
+    f.write(new_events_code) """
 
 print("✅ Dateien aktualisiert, nur in den #region-Bereichen.")

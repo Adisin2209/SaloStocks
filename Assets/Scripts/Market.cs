@@ -11,33 +11,44 @@ public class Market : MonoBehaviour
     
     
     public List<Stock> stocks = new();
+    
+    [SerializeField]
+    private List<Stock> allStocks = new();
+    
     bool paused = false;
     float e = 1.5f; 
 
     void Start()
     { 
        Instance = this;
-       
-       Stocks.Init();
+       Init();
        Events.Init();
-       stocks = Stocks.All.ToList();
-       
-       
-      // e =  WeatherTime.Instance.waitTime;
-       
+
+
+       // e =  WeatherTime.Instance.waitTime;
+
+    }
+
+    void Init()
+    {
+        
+        Stocks.Init();
+        stocks = Stocks.All.ToList(); 
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+        allStocks = new List<Stock>(Stocks.All);
+        
         Player.Instance.calcAmount();
         
         if (Input.GetKeyDown(KeyCode.E))
         {
             
-            //startNextRound();
-            Player.Instance.addStock(Stocks.Salo);
-            Debug.Log("Salo Bought");
+
+           // Stocks.createAndInitStock("Martin Stray", 120);
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -71,10 +82,10 @@ public class Market : MonoBehaviour
     public void startNextDay()
     {
         stocks.Clear();
-        stocks = Stocks.All.ToList();
+        Init();
         
         distributeRandomToAllStocks(-0.02f,0.02f);
-        SaveGame();
+        if(Player.Instance.AutoSave) SaveGame();
        // Debug.Log("Vyshivanka price: "+Stocks.Vyshyvanka.history[WeatherTime.Instance.daysPassed]);
         //Events.fireRandomEvent();
         //StartCoroutine(HELPER_fireEventDelay());
@@ -104,11 +115,19 @@ public class Market : MonoBehaviour
     {
         SaveData data = SaveSystem.LoadData();
         
+        
         Player.Instance.freeBalance = data.cash;
         WeatherTime.Instance.daysPassed = data.currentDay;
         WeatherTime.Instance.currentTime = data.currentHour;
+        Events.eventList = data.events;
         
         // Restore stock prices
+        
+        Stocks.ClearRegistry(); // Methode musst du noch anlegen, siehe unten
+
+       
+        
+        
         foreach (var savedStock in data.stockPrices)
         {
             if (Stocks.All.FirstOrDefault(s => s.name == savedStock.name) is { } existingStock)
@@ -128,6 +147,9 @@ public class Market : MonoBehaviour
             }
         }
         Stocks.updateStockHistory();
+        
+        Init();
+        UI_Handler.Instance.populateStocksUI();
         Debug.Log("loaded");
     }
     

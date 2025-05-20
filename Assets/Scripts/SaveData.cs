@@ -6,6 +6,7 @@ using UnityEngine;
 public class SavedStock
 {
     public string name;
+    public string key;
     public float price;
     public List<float> history;
 }
@@ -26,6 +27,8 @@ public class SaveData
     
     public List<SavedStock> stockPrices;
     public List<SavedPortfolioStock> portfolio;
+    
+    public List<Event> events;
 
 
     public SaveData()
@@ -35,10 +38,23 @@ public class SaveData
         currentHour = WeatherTime.Instance.currentTime;
         
         stockPrices = new List<SavedStock>();
+        events = Events.eventList;
         foreach (var stock in Stocks.All)
         {
-            stockPrices.Add(new SavedStock { name = stock.name, price = stock.price, history = new List<float>(stock.history) });
+            string key = stock.name.Replace(" ", "");
+            stockPrices.Add(new SavedStock
+            {
+                name = stock.name,
+                key = key,
+                price = stock.price,
+                history = new List<float>(stock.history)
+            });
         }
+        
+        //foreach (var stock in Stocks.All)
+        //{
+            //stockPrices.Add(new SavedStock { name = stock.name, price = stock.price, history = new List<float>(stock.history) });
+        //}
 
         portfolio = new List<SavedPortfolioStock>();
         foreach (var s in Player.Instance.stocksInWallet)

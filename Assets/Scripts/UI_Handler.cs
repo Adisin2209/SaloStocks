@@ -83,25 +83,19 @@ public class UI_Handler : MonoBehaviour
 
     public void populateStocksUI()
     {
-        foreach (var s in Stocks.All)
+        
+        
+        // Entferne alle alten Buttons
+        foreach (Transform child in stocksSpawn.transform)
         {
-            bool alreadyExists = false;
+            Destroy(child.gameObject);
+        }
 
-            foreach (Transform child in stocksSpawn.transform)
-            {
-                UI_Stock uiStock = child.GetComponent<UI_Stock>();
-                if (uiStock != null && uiStock.selectedStockKey == s.name)
-                {
-                    alreadyExists = true;
-                    break;
-                }
-            }
-
-            if (!alreadyExists)
-            {
-                GameObject stockButton = Instantiate(stockButtonPrefab, stocksSpawn.transform);
-                stockButton.GetComponent<UI_Stock>().selectedStockKey = s.name;
-            }
+        // Jetzt frische Buttons erzeugen
+        foreach (var s in Market.Instance.stocks)
+        {
+            GameObject stockButton = Instantiate(stockButtonPrefab, stocksSpawn.transform);
+            stockButton.GetComponent<UI_Stock>().selectedStockKey = s.name;
         }
     }
 

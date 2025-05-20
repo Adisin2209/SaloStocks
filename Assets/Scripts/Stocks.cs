@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
 public class Stock
@@ -67,6 +68,7 @@ public class Stock
 
 public static class Stocks 
 {
+    
     private static Dictionary<string, Stock> _registry = new();
     
     
@@ -76,6 +78,7 @@ public static class Stocks
     public static Stock Vyshyvanka => _registry["Vyshyvanka"];
     public static Stock Horilka => _registry["Horilka"];
     public static Stock TractorParts => _registry["TractorParts"];
+    public static Stock HesmoDihh => _registry["HesmoDihh"];
     #endregion
     
     public static void Init()
@@ -88,6 +91,7 @@ public static class Stocks
         _registry["Vyshyvanka"] = new Stock("Vyshyvanka", 500f);
         _registry["Horilka"] = new Stock("Horilka", 300f);
         _registry["TractorParts"] = new Stock("Tractor Parts", 1000f);
+        _registry["HesmoDihh"] = new Stock("Hesmo Dihh", 500f);
         #endregion
     }
     
@@ -114,6 +118,32 @@ public static class Stocks
             s.UpdateHistory(day-1);
         }
     }
+    
+    public static void AddStock(string name, float price)
+    {
+        string key = name.Replace(" ", "");
+
+        if (_registry.ContainsKey(key))
+        {
+            Debug.LogWarning($"Stock '{name}' already exists in registry.");
+            return;
+        }
+
+        _registry[key] = new Stock(name, price);
+        Debug.Log($"Stock '{name}' with price {price} added to registry. With key {key}");
+        
+        Init();
+        Market.Instance.stocks = Stocks.All.ToList(); 
+        UI_Handler.Instance.populateStocksUI();
+    }
+
+    
+    
+    public static void ClearRegistry()
+    {
+        _registry.Clear();
+    }
+
 
     public static IEnumerable<Stock> All => _registry.Values;
     public static IEnumerable<string> AllKeys => _registry.Keys;

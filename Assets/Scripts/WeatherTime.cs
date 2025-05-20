@@ -63,7 +63,7 @@ public class WeatherTime : MonoBehaviour
             {
                 Events.fireRandomEvent();
                 Stocks.updateStockHistory();
-                Market.Instance.SaveGame();
+                if(Player.Instance.AutoSave) Market.Instance.SaveGame();
                 eventFiredToday = true;
             }
             

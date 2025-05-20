@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public static Player Instance;
+    [Header("Game Settings")] 
+    public bool AutoSave = false;
     
     public float freeBalance;
     public float portfolioBalance;
