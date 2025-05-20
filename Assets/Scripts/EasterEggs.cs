@@ -65,7 +65,20 @@ public class EasterEggs : MonoBehaviour
                     }
                 );
                 
-                Debug.Log("Martin strays triggered");
+                Events.addEvent(
+                    
+                    "Martin rennt vor weisser Frau Weg",
+                    "Als Martin eine gewisse weisse Frau erblickte, schien er sich auf dem Fahrrand umzudrehen und einfach weg zu fahren.",
+                    100,
+                    new List<StockImpact>
+                    {
+                        new StockImpact(Stocks.GetStockByKey("HadidStrays"), -5f),
+                        new StockImpact(Stocks.GetStockByKey("MartinStrays"), 15f),
+                        new StockImpact(Stocks.GetStockByKey("AndriiStrays"), -5f),
+                        new StockImpact(Stocks.GetStockByKey("MustafaStrays"), -5f),
+                    }
+                );
+                
                 
 
                 #endregion
