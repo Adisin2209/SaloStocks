@@ -108,13 +108,6 @@ public class UI_Handler : MonoBehaviour
 
     public void detailedStockButton()
     {
-        if (WeatherTime.Instance.daysPassed <= 1)
-        {
-            detailedStock24HText.text = "NO DATA YET";
-            detailedStock7DText.text = "NO DATA YET";
-            detailedStockALLText.text = "NO DATA YET";
-            
-        }
         
         
         if (CurrentStock != null)
@@ -138,14 +131,25 @@ public class UI_Handler : MonoBehaviour
             int daysPassed = WeatherTime.Instance.daysPassed;
             int currentDay = daysPassed - 1;
 
+            
+            if (WeatherTime.Instance.daysPassed <= 1)
+            {
+                detailedStock24HText.text = (CurrentStock.price-CurrentStock.initialPrice).ToString("F2") + " HRN";
+                detailedStock7DText.text = "NO DATA YET";
+                detailedStockALLText.text = "NO DATA YET";
+            
+            }
+            
+            
+            
             if (currentDay < 1 || CurrentStock.history.Count <= currentDay) return;
 
             // 1-Tages-Änderung
             float change1d = CurrentStock.GetPriceChangeRaw(1);
             float change1dPercent = CurrentStock.GetPriceChangePercent(1);
         
-            if(change1d < 0) detailedStock24HText.text = "<color=#FF0000>\u25bc" + change1d.ToString("F2") +" HRN "+ change1dPercent.ToString("F2")+"%";
-            if(change1d > 0) detailedStock24HText.text = "<color=#02fa02>\u25b2 +" + change1d.ToString("F2")+" HRN "+ change1dPercent.ToString("F2")+"%";
+            if(change1d < 0) detailedStock24HText.text = "<color=#FF0000>\u25bc" + (change1d*(-1)).ToString("F2") +"HRN "+ (change1dPercent*(-1)).ToString("F2")+"%";
+            if(change1d > 0) detailedStock24HText.text = "<color=#02fa02>\u25b2" + change1d.ToString("F2")+"HRN "+ change1dPercent.ToString("F2")+"%";
             if(change1d == 0)detailedStock24HText.text = "--- --- --- ---";
         
 
@@ -153,8 +157,8 @@ public class UI_Handler : MonoBehaviour
             int daysAgo = Mathf.Min(7, currentDay);
             float change7d = CurrentStock.GetPriceChangeRaw(daysAgo);
             float change7dPercent = CurrentStock.GetPriceChangePercent(daysAgo);
-            if(change7d < 0) detailedStock7DText.text = "<color=#FF0000>\u25bc" + change7d.ToString("F2") +" HRN "+ change7dPercent.ToString("F2")+"%";
-            if(change7d > 0) detailedStock7DText.text = "<color=#02fa02>\u25b2 +" + change7d.ToString("F2")+" HRN "+ change7dPercent.ToString("F2")+"%";
+            if(change7d < 0) detailedStock7DText.text = "<color=#FF0000>\u25bc" + (change7d*(-1)).ToString("F2") +"HRN "+ (change7dPercent*(-1)).ToString("F2")+"%";
+            if(change7d > 0) detailedStock7DText.text = "<color=#02fa02>\u25b2" + change7d.ToString("F2")+"HRN "+ change7dPercent.ToString("F2")+"%";
             
             // ALL Änderung
             float pastPrice = CurrentStock.history[0];
@@ -163,8 +167,8 @@ public class UI_Handler : MonoBehaviour
             //return (currentPrice - pastPrice) / pastPrice * 100f;
             float changePrice = (currentPrice - pastPrice);
             float changePricePercent = (currentPrice - pastPrice) / pastPrice * 100f;
-            if(changePrice < 0) detailedStockALLText.text = "<color=#FF0000>\u25bc" + changePrice.ToString("F2") +" HRN "+ changePricePercent.ToString("F2")+"%";
-            if(changePrice > 0) detailedStockALLText.text = "<color=#02fa02>\u25b2 +" + changePrice.ToString("F2")+" HRN "+ changePricePercent.ToString("F2")+"%";
+            if(changePrice < 0) detailedStockALLText.text = "<color=#FF0000>\u25bc" + (changePrice*(-1)).ToString("F2") +"HRN "+ (changePricePercent*(-1)).ToString("F2")+"%";
+            if(changePrice > 0) detailedStockALLText.text = "<color=#02fa02>\u25b2" + changePrice.ToString("F2")+"HRN "+ changePricePercent.ToString("F2")+"%";
         }
         
         

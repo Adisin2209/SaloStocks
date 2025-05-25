@@ -69,7 +69,7 @@ public class WeatherTime : MonoBehaviour
             
             
             yield return new WaitForSeconds(waitTime);
-           // Market.Instance.distributeRandomToAllStocks(-0.02f,0.02f); //random hourly change in stocks
+            Market.Instance.distributeRandomToAllStocks(-0.02f,0.02f); //random hourly change in stocks
             Stocks.updateStockHistory();
             currentTime++;
         }

@@ -2284,6 +2284,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stocks: []
   allStocks: []
+  allEvents: []
+  debugResumeSpeed: 0.1
 --- !u!4 &635351008
 Transform:
   m_ObjectHideFlags: 0
@@ -2766,6 +2768,7 @@ MonoBehaviour:
     name: 
     price: 0
     history: []
+    initialPrice: 0
   detailedStockInfoWindow: {fileID: 1731067550}
   detailedStockNameText: {fileID: 546263160}
   detailedStockPriceText: {fileID: 1608015809}

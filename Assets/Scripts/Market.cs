@@ -14,9 +14,11 @@ public class Market : MonoBehaviour
     
     [SerializeField]
     private List<Stock> allStocks = new();
+    [SerializeField]
+    private List<Event> allEvents = new();
     
     bool paused = false;
-    float e = 1.5f; 
+    public float debugResumeSpeed = 0.1f; 
 
     void Start()
     { 
@@ -41,6 +43,8 @@ public class Market : MonoBehaviour
     {
         
         allStocks = new List<Stock>(Stocks.All);
+        allEvents = Events.eventList;
+        
         
         Player.Instance.calcAmount();
         
@@ -64,15 +68,14 @@ public class Market : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (!paused)
+            // Toggle Pause
+            if (Time.timeScale > 0f)
             {
-                paused = true;
-                WeatherTime.Instance.waitTime = 999999;
+                Time.timeScale = 0f; // Spiel pausieren
             }
             else
             {
-                paused = false;
-                WeatherTime.Instance.waitTime = e;
+                Time.timeScale = 1f; // Spiel weiterlaufen lassen
             }
             
             

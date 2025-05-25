@@ -10,11 +10,13 @@ public class Stock
     public string name;
     public float price;
     public List<float> history = new();
+    public float initialPrice;
 
     public Stock(string name, float price)
     {
         this.name = name;
         this.price = price;
+        initialPrice = price;
      //   this.history = new List<float>();
     }
     
@@ -77,8 +79,16 @@ public static class Stocks
     public static Stock Salo => _registry["Salo"];
     public static Stock Vyshyvanka => _registry["Vyshyvanka"];
     public static Stock Horilka => _registry["Horilka"];
-    public static Stock TractorParts => _registry["TractorParts"];
-    public static Stock HesmoDihh => _registry["HesmoDihh"];
+    public static Stock Semki => _registry["Semki"];
+    public static Stock CossacksTourismETF => _registry["CossacksTourismETF"];
+    public static Stock Varenyky => _registry["Varenyky"];
+    public static Stock Kvass => _registry["Kvass"];
+    public static Stock RussianTankScrap => _registry["RussianTankScrap"];
+    public static Stock ChernobylAdventurePark => _registry["ChernobylAdventurePark"];
+    public static Stock ThermalScopeSelfies => _registry["ThermalScopeSelfies"];
+    public static Stock OrthoCoin => _registry["OrthoCoin"];
+    public static Stock Buckwheat => _registry["Buckwheat"];
+    public static Stock SunflowerOil => _registry["SunflowerOil"];
     #endregion
     
     public static void Init()
@@ -87,11 +97,19 @@ public static class Stocks
         
         
         #region STOCKREGISTRY
-        _registry["Salo"] = new Stock("Salo", 100f);
-        _registry["Vyshyvanka"] = new Stock("Vyshyvanka", 500f);
-        _registry["Horilka"] = new Stock("Horilka", 300f);
-        _registry["TractorParts"] = new Stock("Tractor Parts", 1000f);
-        _registry["HesmoDihh"] = new Stock("Hesmo Dihh", 500f);
+        _registry["Salo"] = new Stock("Salo", 150f);
+        _registry["Vyshyvanka"] = new Stock("Vyshyvanka", 400f);
+        _registry["Horilka"] = new Stock("Horilka", 220f);
+        _registry["Semki"] = new Stock("Semki", 70f);
+        _registry["CossacksTourismETF"] = new Stock("Cossacks Tourism ETF", 600f);
+        _registry["Varenyky"] = new Stock("Varenyky", 200f);
+        _registry["Kvass"] = new Stock("Kvass", 90f);
+        _registry["RussianTankScrap"] = new Stock("Russian Tank Scrap", 300f);
+        _registry["ChernobylAdventurePark"] = new Stock("Chernobyl Adventure Park", 670f);
+        _registry["ThermalScopeSelfies"] = new Stock("Thermal Scope Selfies", 420f);
+        _registry["OrthoCoin"] = new Stock("Ortho Coin", 500f);
+        _registry["Buckwheat"] = new Stock("Buckwheat", 120f);
+        _registry["SunflowerOil"] = new Stock("Sunflower Oil", 160f);
         #endregion
     }
     

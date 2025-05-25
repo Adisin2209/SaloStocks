@@ -43,8 +43,20 @@ public class UI_Stock : MonoBehaviour
         #region Edgecase for first day where there is no data yet
         if (WeatherTime.Instance.daysPassed <= 1)
         {
-            history1d.text = "NO DATA YET";
+            float ch = (stock.price - stock.initialPrice);
+            
+            if(ch<0)history1d.text = "<color=#FF0000>\u25bc" +(stock.price-stock.initialPrice).ToString("F2") + " HRN";
+            if(ch>0)history1d.text = "<color=#02fa02>\u25b2 " +(stock.price-stock.initialPrice).ToString("F2") + " HRN";
+            
+            if(ch<0)history7d.text = "<color=#FF0000>\u25bc" +(stock.price-stock.initialPrice).ToString("F2") + " HRN";
+            if(ch>0)history7d.text = "<color=#02fa02>\u25b2 " +(stock.price-stock.initialPrice).ToString("F2") + " HRN";
+            
+            
             history7d.text = "NO DATA YET";
+            
+            
+           
+            
         }
         
 
@@ -83,8 +95,8 @@ public class UI_Stock : MonoBehaviour
         float change1d = stock.GetPriceChangeRaw(1);
         float change1dPercent = stock.GetPriceChangePercent(1);
         
-        if(change1d < 0) history1d.text = "<color=#FF0000>\u25bc" + change1d.ToString("F2") +" HRN "+ change1dPercent.ToString("F2")+"%";
-        if(change1d > 0) history1d.text = "<color=#02fa02>\u25b2 +" + change1d.ToString("F2")+" HRN "+ change1dPercent.ToString("F2")+"%";
+        if(change1d < 0) history1d.text = "<color=#FF0000>\u25bc" + (change1d*(-1)).ToString("F2") +"HRN "+ (change1dPercent*(-1)).ToString("F2")+"%";
+        if(change1d > 0) history1d.text = "<color=#02fa02>\u25b2 " + change1d.ToString("F2")+"HRN "+ change1dPercent.ToString("F2")+"%";
         if(change1d == 0)history1d.text = "--- --- --- ---";
         
 
@@ -92,8 +104,8 @@ public class UI_Stock : MonoBehaviour
         int daysAgo = Mathf.Min(7, currentDay);
         float change7d = stock.GetPriceChangeRaw(daysAgo);
         float change7dPercent = stock.GetPriceChangePercent(daysAgo);
-        if(change7d < 0) history7d.text = "<color=#FF0000>\u25bc" + change7d.ToString("F2") +" HRN "+ change7dPercent.ToString("F2")+"%";
-        if(change7d > 0) history7d.text = "<color=#02fa02>\u25b2 +" + change7d.ToString("F2")+" HRN "+ change7dPercent.ToString("F2")+"%";
+        if(change7d < 0) history7d.text = "<color=#FF0000>\u25bc" + (change7d*(-1)).ToString("F2") +"HRN "+ (change7dPercent*(-1)).ToString("F2")+"%";
+        if(change7d > 0) history7d.text = "<color=#02fa02>\u25b2 " + change7d.ToString("F2")+"HRN "+ change7dPercent.ToString("F2")+"%";
         //test
         
         
